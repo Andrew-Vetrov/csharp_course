@@ -2,9 +2,10 @@ namespace App;
 
 public static class LeapYear
 {
-    public static bool IsLeapYear(int year) 
+    public static bool IsLeapYear(int year)
     {
-        //TODO напишите тут свое решение
+        return year % 400 == 0 || year % 100 != 0 && year % 4 == 0;
+        
         throw new NotImplementedException();
     }
 }
