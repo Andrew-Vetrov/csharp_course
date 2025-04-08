@@ -24,7 +24,5 @@ public static class Prices
         }
         
         return isFirstCapital ? System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(answer) : answer;
-        
-        throw new NotImplementedException();
     }
 }
