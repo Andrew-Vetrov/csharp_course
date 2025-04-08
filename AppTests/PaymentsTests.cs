@@ -4,9 +4,14 @@ namespace AppTests;
 
 public class PaymentsTests
 {
-    //TODO напишите свои тесты
     [TestCase(PaymentsPlan.Annuity, 7, 3, 10000, 10116.90)]
     [TestCase(PaymentsPlan.Differentiated, 3, 5, 200000, 201500)]
+    [TestCase(PaymentsPlan.Annuity, 49, 19, 284973249, 415175398.2)]
+    [TestCase(PaymentsPlan.Differentiated, 49, 19, 284973249, 401337325.7)]
+    [TestCase(PaymentsPlan.Annuity, 99, 31, 3274832, 9159945.9)]
+    [TestCase(PaymentsPlan.Differentiated, 99, 31, 3274832, 7597610.2)]
+    [TestCase(PaymentsPlan.Annuity, 87, 596, 5, 216.1)]
+    [TestCase(PaymentsPlan.Differentiated, 87, 596, 5, 113.2)]
     public void TestPasses_When_Result_Correct(PaymentsPlan plan, decimal rate, int monthsCount, decimal amount, decimal expected)
     {
         var actual = Payments.CalculateTotalPayments(plan, rate, monthsCount, amount);
