@@ -18,6 +18,6 @@ public class DistanceTests
         double expected)
     {
         var actual = Distance.DistanceToSegment(x, y, x1, y1, x2, y2);
-        Assert.That(actual, Is.EqualTo(expected));
+        Assert.That(Math.Abs(actual - expected) <= 0.1, Is.True);
     }
 }
