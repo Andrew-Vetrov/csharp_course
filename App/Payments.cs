@@ -10,6 +10,11 @@ public class Payments
 {
     public static decimal CalculateTotalPayments(PaymentsPlan plan, decimal rate, int monthsCount, decimal amount)
     {
+        if (rate == 0 || monthsCount == 0)
+        {
+            return amount;
+        }
+        
         var monthlyRate = rate / 12 / 100;
         
         switch (plan)
@@ -20,7 +25,7 @@ public class Payments
                 var powCoeff = (decimal)Math.Pow(1.0 + (double) monthlyRate, monthsCount);
                 return Decimal.Round(monthsCount * amount * monthlyRate * powCoeff / (powCoeff - 1), 1);
             default:
-                return -1;
+                throw new ArgumentException("Incorrect plan.");
         }
     }
 }
