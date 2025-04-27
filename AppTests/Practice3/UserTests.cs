@@ -5,7 +5,7 @@ namespace AppTests.Practice3;
 public class UserTests
 {
     [Test]
-    public void TestFunction()
+    public void Test_1()
     {
         var user1 = new User("vanya", "qwerty123", "Ivan", "Ivanov", "0948032480", "+7 987 654 32 10");
         var user2 = new User("ahah", "hehe", "Andrew", "Vetrov", "1234567890", "+77777777777");
