@@ -6,7 +6,7 @@ public class Benford
     {
         var statistics = new int[10];
         var words = text.Split(' ');
-	
+	    
         foreach (var word in words)
         {
             int indx = 0;
