@@ -1,51 +1,30 @@
+using System.Text.RegularExpressions;
+
 namespace App.Practice2;
 
 public class Frequency
 {
+    private static readonly char[] separator = { '.', '?', '!' };
     public static Dictionary<string, string> FrequencyAnalysis(string inputString)
     {
-        Dictionary<string, string> result = new Dictionary<string, string>();
-        Dictionary<string, Dictionary<string, int>> countFrequency = new Dictionary<string, Dictionary<string, int>>();
+        var result = new Dictionary<string, string>();
+        var countFrequency = new Dictionary<string, Dictionary<string, int>>();
 
-        void GeneralFunction(string key, string value)
+        var sentences = inputString.Split(separator);
+        foreach (var sentence in sentences)
         {
-            if (result.TryAdd(key, value))
-            {
-                countFrequency.Add(key, new Dictionary<string, int>());
-                countFrequency[key].Add(value, 1);
-            }
-
-            else
-            {
-                if (!countFrequency[key].TryAdd(value, 1))
-                {
-                    countFrequency[key][value]++;
-                }
-
-                if (countFrequency[key][value] > countFrequency[key][result[key]]
-                    || countFrequency[key][value] == countFrequency[key][result[key]]
-                    && String.CompareOrdinal(value, result[key]) < 0)
-                {
-                    result[key] = value;
-                }
-            }
-        }
-        
-        var words = inputString.Split('.');
-        foreach (var word in words)
-        {
-            var letters = word.Split(' ');
-            var lettersLen = letters.Length;
+            var words = Array.FindAll(Regex.Split(sentence, @"[^a-zA-Z]+"), s => !string.IsNullOrEmpty(s));
+            var wordsLen = words.Length;
             
-            for (int i = (String.IsNullOrEmpty(letters[0]) ? 1 : 0); i < lettersLen - 2; i++)
+            for (var i = 0; i < wordsLen - 2; i++)
             {
-                GeneralFunction(letters[i], letters[i + 1]);
-                GeneralFunction(String.Concat(letters[i], " ", letters[i + 1]), letters[i + 2]);
+                NGrammHandling(words[i], words[i + 1]);
+                NGrammHandling(string.Concat(words[i], " ", words[i + 1]), words[i + 2]);
             }
 
-            if (lettersLen > 1 && !String.IsNullOrEmpty(letters[lettersLen - 1]))
+            if (wordsLen > 1)
             {
-                GeneralFunction(letters[lettersLen - 2], letters[lettersLen - 1]);
+                NGrammHandling(words[wordsLen - 2], words[wordsLen - 1]);
             }
         }
 
@@ -55,5 +34,30 @@ public class Frequency
         }
 
         return result;
+
+        void NGrammHandling(string key, string value)
+        {
+            key = key.ToLower();
+            value = value.ToLower();
+            
+            if (result.TryAdd(key, value))
+            {
+                countFrequency.Add(key, new Dictionary<string, int>());
+                countFrequency[key].Add(value, 1);
+            }
+
+            else
+            {
+                countFrequency[key].TryAdd(value, 0);
+                countFrequency[key][value]++;
+
+                if (countFrequency[key][value] > countFrequency[key][result[key]]
+                    || countFrequency[key][value] == countFrequency[key][result[key]]
+                    && string.CompareOrdinal(value, result[key]) < 0)
+                {
+                    result[key] = value;
+                }
+            }
+        }
     }
 }

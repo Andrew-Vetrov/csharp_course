@@ -28,7 +28,9 @@ public class FrequencyTests
         Assert.IsTrue(actual["c a"].Equals("d"));
     }
 
-    [TestCase(" b . aa . ")]
+    [TestCase("3b 3? aa ! ")]
+    [TestCase(".?.!")]
+    [TestCase("a. b")]
     public void Test2(string text)
     {
         var actual = Frequency.FrequencyAnalysis(text);
