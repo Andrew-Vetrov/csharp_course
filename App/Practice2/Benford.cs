@@ -5,39 +5,26 @@ public class Benford
     public static int[] GetBenfordStatistics(string text)
     {
         var statistics = new int[10];
-        var words = text.Split(' ');
+        var numbers = "0123456789".ToCharArray();
+        
+        var len = text.Length;
+        var index = 0;
 	    
-        foreach (var word in words)
+        while (index < len)
         {
-            int indx = 0;
-            var len = word.Length;
-            var numbers = "0123456789".ToCharArray();
-
-            while (indx < len)
+            index = text.IndexOfAny(numbers, index);
+            if (index == -1)
             {
-                indx = word.IndexOfAny(numbers, indx);
-                if (indx == -1)
-                {
-                    break;
-                }
+                break;
+            }
 
-                while (indx < len && word[indx] == '0')
-                {
-                    indx++;
-                }
+            statistics[text[index++] - '0']++;
 
-                if (indx < len && Char.IsNumber(word[indx]))
-                {
-                    statistics[word[indx] - '0']++;
-                }
-
-                while (indx < len && Char.IsNumber(word[indx]))
-                {
-                    indx++;
-                }
+            while (index < len && Char.IsNumber(text[index]))
+            {
+                index++;
             }
         }
-	    
         
         return statistics;
     }
