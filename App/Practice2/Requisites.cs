@@ -2,9 +2,9 @@ namespace App.Practice2;
 
 public class Requisites
 {
-    private static int[] _coeff10 = new int[] {2, 4, 10, 3, 5, 9, 4, 6, 8 };
-    private static int[] _coeff121 = new int[] {7, 2, 4, 10, 3, 5, 9, 4, 6, 8 };
-    private static int[] _coeff122 = new int[] {3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8 };
+    private static int[] _coeff10 = {2, 4, 10, 3, 5, 9, 4, 6, 8 };
+    private static int[] _coeff121 = {7, 2, 4, 10, 3, 5, 9, 4, 6, 8 };
+    private static int[] _coeff122 = {3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8 };
     
     public static bool IsValidInn(string inn)
     {
@@ -15,8 +15,8 @@ public class Requisites
             return false;
         }
 
-        int[] number = new int[len];
-        for (int i = 0; i < len; i++)
+        var number = new int[len];
+        for (var i = 0; i < len; i++)
         {
             number[i] = int.Parse(inn[i].ToString());
         }
@@ -39,9 +39,9 @@ public class Requisites
 
     static int ScalarProduct(int[] a, int[] b, int len)
     {
-        int ans = 0;
+        var ans = 0;
 
-        for (int i = 0; i < len; i++)
+        for (var i = 0; i < len; i++)
         {
             ans += a[i] * b[i];
         }
