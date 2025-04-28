@@ -4,16 +4,6 @@ public class UserSatProvider
 {
     public UserActionStatResponse GetUserActionStat(UserActionStatRequest request, List<UserActionItem> userActionItems)
     {
-        /*switch (request.DateGroupType)
-        {
-            case DateGroupTypes.Daily:
-                return DailyCase(request, userActionItems);
-            case DateGroupTypes.Monthly:
-                return MonthlyCase(request, userActionItems);
-            default:
-                throw new ArgumentException("Invalid date group type.");
-        }*/
-        
         if (request.DateGroupType != DateGroupTypes.Daily && request.DateGroupType != DateGroupTypes.Monthly)
         {
             throw new ArgumentException("Invalid date group type.");
@@ -52,16 +42,6 @@ public class UserSatProvider
         
         return result;
     }
-
-    /*private UserActionStatResponse DailyCase(UserActionStatRequest request, List<UserActionItem> userActionItems)
-    {
-        
-    }
-    
-    private UserActionStatResponse MonthlyCase(UserActionStatRequest request, List<UserActionItem> userActionItems)
-    {
-        
-    }*/
 
     private UserActionStatItem WrapUserActionStatItem(DateTime startDate, DateGroupTypes dateGroupType)
     {
