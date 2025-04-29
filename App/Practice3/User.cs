@@ -4,6 +4,7 @@ namespace App.Practice3;
 
 public class User
 {
+    private static readonly Regex regex = new Regex(@"^(?:\+7|8|7)?[\s\-]?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}$");
     public Guid Id { get; init; }
     public DateTime RegisterDate { get; init; }
     
@@ -44,7 +45,7 @@ public class User
     
     private static bool IsPhoneValid(string inputString) 
     {
-        MatchCollection matches = new Regex(@"^(?:\+7|8|7)?[\s\-]?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}$").Matches(inputString);
+        var matches = regex.Matches(inputString);
 
         if (matches.Count != 1 || matches[0].Value.Length != inputString.Length) // второе условие - проверка на то, что в строке нет ничего лишнего
         {

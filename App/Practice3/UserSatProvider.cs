@@ -6,13 +6,16 @@ public class UserSatProvider
     {
         if (request.DateGroupType != DateGroupTypes.Daily && request.DateGroupType != DateGroupTypes.Monthly)
         {
-            throw new ArgumentException("Invalid date group type.");
+            throw new ArgumentOutOfRangeException(nameof(request.DateGroupType));
         }
         
-        UserActionStatResponse result = new UserActionStatResponse();
-        result.UserActionStat = new List<UserActionStatItem>();
-        DateTime lastDate = DateTime.MinValue;
-        UserActionStatItem statItem = new UserActionStatItem();
+        var result = new UserActionStatResponse
+        {
+            UserActionStat = new List<UserActionStatItem>()
+        };
+        
+        var lastDate = DateTime.MinValue;
+        var statItem = new UserActionStatItem();
         
         foreach (var item in userActionItems)
         {
@@ -26,7 +29,7 @@ public class UserSatProvider
                 break;
             }
 
-            if (result.UserActionStat.Count == 0 || item.Date.Day != lastDate.Day) // ???
+            if (result.UserActionStat.Count == 0 || IsNewStateItem(item.Date, lastDate, request.DateGroupType))
             {
                 result.UserActionStat.Add(statItem);
                 lastDate = item.Date;
@@ -43,11 +46,23 @@ public class UserSatProvider
         return result;
     }
 
-    private UserActionStatItem WrapUserActionStatItem(DateTime startDate, DateGroupTypes dateGroupType)
+    private static bool IsNewStateItem(DateTime item1, DateTime item2, DateGroupTypes dateGroupType)
     {
-        UserActionStatItem result = new UserActionStatItem();
-        result.ActionMetrics = new Dictionary<ActionTypes, int>();
-        result.StartDate = startDate;
+        return dateGroupType switch
+        {
+            DateGroupTypes.Daily => item1.Day != item2.Day,
+            DateGroupTypes.Monthly => item1.Month != item2.Month,
+            _ => throw new ArgumentOutOfRangeException(nameof(dateGroupType))
+        };
+    }
+
+    private static UserActionStatItem WrapUserActionStatItem(DateTime startDate, DateGroupTypes dateGroupType)
+    {
+        var result = new UserActionStatItem
+        {
+            ActionMetrics = new Dictionary<ActionTypes, int>(),
+            StartDate = startDate
+        };
 
         switch (dateGroupType)
         {
@@ -59,12 +74,14 @@ public class UserSatProvider
                 var month = startDate.Month;
                 result.EndDate = new DateTime(year, month, DateTime.DaysInMonth(year, month), 23, 59, 59, 999);
                 break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(dateGroupType));
         }
         
         return result;
     }
 
-    private void InsertActionItem(Dictionary<ActionTypes, int> dict, UserActionItem actionItem)
+    private static void InsertActionItem(Dictionary<ActionTypes, int> dict, UserActionItem actionItem)
     {
         dict.TryAdd(actionItem.Action, 0);
         dict[actionItem.Action]++;
