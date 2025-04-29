@@ -19,7 +19,7 @@ public class UserSatProvider
         
         foreach (var item in userActionItems)
         {
-            if (item.Date.CompareTo(request.EndDate) < 0)
+            if (item.Date.CompareTo(request.StartDate) < 0)
             {
                 continue;
             }
@@ -39,7 +39,17 @@ public class UserSatProvider
             InsertActionItem(statItem.ActionMetrics, item);
         }
 
-        statItem.EndDate = lastDate;
+        if (request.DateGroupType == DateGroupTypes.Daily)
+        {
+            statItem.EndDate = lastDate;
+        }
+
+        else
+        {
+            statItem.EndDate = (lastDate.Month == request.EndDate.Month) ? request.EndDate : 
+                new DateTime(lastDate.Year, lastDate.Month, DateTime.DaysInMonth(lastDate.Year, lastDate.Month));
+        }
+        
         result.UserActionStat.Add(statItem);
         result.UserActionStat.RemoveAt(0); // remove empty element
         
@@ -72,7 +82,7 @@ public class UserSatProvider
             case DateGroupTypes.Monthly:
                 var year = startDate.Year;
                 var month = startDate.Month;
-                result.EndDate = new DateTime(year, month, DateTime.DaysInMonth(year, month), 23, 59, 59, 999);
+                result.EndDate = new DateTime(year, month, DateTime.DaysInMonth(year, month));
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(dateGroupType));
@@ -83,7 +93,7 @@ public class UserSatProvider
 
     private static void InsertActionItem(Dictionary<ActionTypes, int> dict, UserActionItem actionItem)
     {
-        dict.TryAdd(actionItem.Action, 0);
+        dict.TryAdd(actionItem.Action, actionItem.Count - 1);
         dict[actionItem.Action]++;
     }
 }
