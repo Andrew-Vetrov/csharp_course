@@ -19,8 +19,8 @@ public static class UserCreator
         var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(password));
         md5.Dispose();
         
-        StringBuilder res = new StringBuilder();
-        foreach (byte b in hash)
+        var res = new StringBuilder();
+        foreach (var b in hash)
         {
             res.Append(b.ToString("x2"));
         }
