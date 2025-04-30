@@ -47,23 +47,18 @@ public class User
     {
         var matches = regex.Matches(inputString);
 
-        if (matches.Count != 1 || matches[0].Value.Length != inputString.Length) // второе условие - проверка на то, что в строке нет ничего лишнего
+        return matches.Count == 1 && matches[0].Value.Length == inputString.Length; // второе условие - проверка на то, что в строке нет ничего лишнего
+    }
+
+    public bool TryUpdatePhone(string phone)
+    {
+        if (!IsPhoneValid(phone))
         {
             return false;
         }
-
-        return true;
-    }
-
-    private bool TryUpdatePhone(string phone)
-    {
-        if (IsPhoneValid(phone))
-        {
-            this._phone = phone;
-            return true;
-        }
         
-        return false;
+        this._phone = phone;
+        return true;
     }
     
     public string GetUserFullName()
