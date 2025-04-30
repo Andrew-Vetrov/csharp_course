@@ -50,7 +50,7 @@ public class User
         return matches.Count == 1 && matches[0].Value.Length == inputString.Length; // второе условие - проверка на то, что в строке нет ничего лишнего
     }
 
-    public bool TryUpdatePhone(string phone)
+    private bool TryUpdatePhone(string phone)
     {
         if (!IsPhoneValid(phone))
         {
