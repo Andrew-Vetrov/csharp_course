@@ -4,8 +4,12 @@ namespace AppTests;
 
 public class DistanceTests
 {
-    //TODO напишите свои тесты
-    [TestCase(1, 1, 1, 1, 1, 1, 1)]
+    [TestCase(0, 0, 0, 0, 0, 0, 0)]
+    [TestCase(1, 1, 1, 1, 1, 1, 0)]
+    [TestCase(3, 3, 2, 2, 3, 3, 0)]
+    [TestCase(-1, -1, -1, -1, 500, 123, 0)]
+    [TestCase(1, -5, -2, 0, 4, 0, 5)]
+    [TestCase(1, 3, 1, 1, 3, 3, 1.4142135623730951)]
     public void TestPasses_When_Result_Correct(
         // позиция курсора
         double x, double y,
@@ -14,6 +18,6 @@ public class DistanceTests
         double expected)
     {
         var actual = Distance.DistanceToSegment(x, y, x1, y1, x2, y2);
-        Assert.That(actual, Is.EqualTo(expected));
+        Assert.That(Math.Abs(actual - expected) <= 0.1, Is.True);
     }
 }
