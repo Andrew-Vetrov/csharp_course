@@ -32,23 +32,18 @@ public class User
     {
         var matches = regex.Matches(inputString);
 
-        if (matches.Count != 1 || matches[0].Value.Length != inputString.Length) // второе условие - проверка на то, что в строке нет ничего лишнего
-        {
-            return false;
-        }
-
-        return true;
+        return matches.Count == 1 && matches[0].Value.Length == inputString.Length; // второе условие - проверка на то, что в строке нет ничего лишнего
     }
 
     public bool TryUpdatePhone(string phone)
     {
-        if (IsPhoneValid(phone))
+        if (!IsPhoneValid(phone))
         {
-            this.phone = phone;
-            return true;
+            return false;
         }
         
-        return false;
+        this.phone = phone;
+        return true;
     }
     
     public string GetUserFullName()
